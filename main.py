@@ -489,6 +489,7 @@ if __name__ == "__main__":
     parser.add_argument('--hid_drop',  	dest="hid_drop",      	default=0.5,    	type=float,     	help='Dropout for Hidden layer')
     parser.add_argument('--inp_drop',  	dest="inp_drop",      	default=0.4,    	type=float,     	help='Dropout for Input layer')
     parser.add_argument('--layers',      	dest="layers",          	default=2,     	type=int,       	help='Number layers')
+    parser.add_argument('--heads',      	dest="heads",          	default=1,     	type=int,       	help='Number heads')
     parser.add_argument('--model',      	dest="model",          	default='relineare',     	type=str,       	help='Model Selection')
 
     # Logging parameters
