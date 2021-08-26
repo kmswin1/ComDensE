@@ -154,49 +154,6 @@ class Main(object):
             'n-n_test_tail': get_data_loader(TestDataset, 'n-n_test_tail', self.p.batch_size),
         }
 
-        #self.chequer_perm	= self.get_chequer_perm()
-
-    def get_chequer_perm(self):
-        """
-        Function to generate the chequer permutation required for InteractE model
-
-        Parameters
-        ----------
-
-        Returns
-        -------
-
-        """
-        ent_perm  = np.int32([np.random.permutation(self.p.embed_dim) for _ in range(self.p.perm)])
-        rel_perm  = np.int32([np.random.permutation(self.p.embed_dim) for _ in range(self.p.perm)])
-
-        comb_idx = []
-        for k in range(self.p.perm):
-            temp = []
-            ent_idx, rel_idx = 0, 0
-
-            for i in range(self.p.k_h):
-                for j in range(self.p.k_w):
-                    if k % 2 == 0:
-                        if i % 2 == 0:
-                            temp.append(ent_perm[k, ent_idx]); ent_idx += 1;
-                            temp.append(rel_perm[k, rel_idx ] +self.p.embed_dim); rel_idx += 1;
-                        else:
-                            temp.append(rel_perm[k, rel_idx ] +self.p.embed_dim); rel_idx += 1;
-                            temp.append(ent_perm[k, ent_idx]); ent_idx += 1;
-                    else:
-                        if i % 2 == 0:
-                            temp.append(rel_perm[k, rel_idx ] +self.p.embed_dim); rel_idx += 1;
-                            temp.append(ent_perm[k, ent_idx]); ent_idx += 1;
-                        else:
-                            temp.append(ent_perm[k, ent_idx]); ent_idx += 1;
-                            temp.append(rel_perm[k, rel_idx ] +self.p.embed_dim); rel_idx += 1;
-
-            comb_idx.append(temp)
-
-        chequer_perm = torch.LongTensor(np.int32(comb_idx)).to(self.device)
-        return chequer_perm
-
 
     def add_model(self):
         """
