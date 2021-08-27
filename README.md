@@ -1,6 +1,6 @@
 # RelinearE
 
-### model list : relineare, multilayer, multihead
+## model list : relineare, multilayer, multihead
 
 ### python main.py --model "model_name" --data "dataset_name"
 
