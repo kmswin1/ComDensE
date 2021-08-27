@@ -21,7 +21,7 @@ class Main(object):
 
         """
         self.p = params
-        self.p.name = self.p.dataset+'_'+str(self.p.embed_dim)
+        self.p.name = self.p.dataset+'_'+str(self.p.embed_dim)+'_'+self.p.model
         self.logger = get_logger(self.p.name, self.p.log_dir, self.p.config_dir)
 
         self.logger.info(vars(self.p))
