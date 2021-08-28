@@ -21,7 +21,6 @@ class Main(object):
 
         """
         self.p = params
-        self.p.name = self.p.dataset+'_'+str(self.p.embed_dim)+'_'+self.p.model
         self.logger = get_logger(self.p.name, self.p.log_dir, self.p.config_dir)
 
         self.logger.info(vars(self.p))
@@ -385,7 +384,7 @@ class Main(object):
         """
         self.best_val_mrr, self.best_val, self.best_epoch, self.best_val_hit1, self.best_val_hit10, self.best_val_mr = 0., {}, 0., 0., 0., 0
         val_mrr = 0
-        save_path = os.path.join('./torch_saved', self.p.dataset+'_'+str(self.p.embed_dim))
+        save_path = os.path.join('./torch_saved', self.p.name)
 
         if self.p.restore:
             self.load_model(save_path)
