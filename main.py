@@ -412,10 +412,10 @@ class Main(object):
         self.logger.info('Loading best model, evaluating on test data')
         self.load_model(save_path)
         self.evaluate('test')
-        self.evaluate('1-1_test')
-        self.evaluate('1-n_test')
-        self.evaluate('n-1_test')
-        self.evaluate('n-n_test')
+        #self.evaluate('1-1_test')
+        #self.evaluate('1-n_test')
+        #self.evaluate('n-1_test')
+        #self.evaluate('n-n_test')
 
 
 
