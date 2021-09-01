@@ -12,16 +12,12 @@ class RelinearE(nn.Module):
         self.hid_dropout = nn.Dropout(self.args.hid_drop)
         self.activation = nn.ReLU()
         self.transform = nn.Linear(2*self.args.embed_dim, self.args.embed_dim)
-        self.w_r0 = nn.Parameter(torch.randn(2*self.args.num_rel, 2*self.args.embed_dim*2*self.args.embed_dim))
-        self.w_r1 = nn.Parameter(torch.randn(2*self.args.num_rel, 2*self.args.embed_dim*2*self.args.embed_dim))
-        self.w_r2 = nn.Parameter(torch.randn(2*self.args.num_rel, 2*self.args.embed_dim*2*self.args.embed_dim))
-        self.b0 = nn.Parameter(torch.zeros(2*self.args.num_rel))
-        self.b1 = nn.Parameter(torch.zeros(2*self.args.num_rel))
-        self.b2 = nn.Parameter(torch.zeros(2*self.args.num_rel))
+        self.w_r = nn.Parameter(torch.randn(2*self.args.num_rel, 2*self.args.embed_dim*2*self.args.embed_dim))
+        self.mult_w = nn.ModuleList([nn.Linear(2*self.args.embed_dim, 2*self.args.embed_dim) for _ in range(self.args.heads)])
+        self.b_r = nn.Parameter(torch.zeros(2*self.args.num_rel))
         self.bn0 = torch.nn.BatchNorm1d(2*self.args.embed_dim)
-        self.bn1 = torch.nn.BatchNorm1d(2*self.args.embed_dim)
-        self.bn2 = torch.nn.BatchNorm1d(2*self.args.embed_dim)
-        self.bn3 = torch.nn.BatchNorm1d(self.args.embed_dim)
+        self.bn1 = torch.nn.BatchNorm1d(self.args.heads*2*self.args.embed_dim)
+        self.bn2 = torch.nn.BatchNorm1d(self.args.embed_dim)
         self.register_parameter('bias', nn.Parameter(torch.zeros(self.args.num_ent)))
 
         self.bceloss = torch.nn.BCELoss()
@@ -43,29 +39,25 @@ class RelinearE(nn.Module):
         head = self.ent_emb[h]
         rel = self.rel_emb[r]
         x = self.inp_dropout(torch.cat([head, rel], dim=-1))
-        w_r0 = self.w_r0[r]
-        w_r1 = self.w_r1[r]
-        w_r2 = self.w_r2[r]
-        w_r0 = w_r0.view(-1, 2*self.args.embed_dim, 2*self.args.embed_dim)
-        w_r1 = w_r1.view(-1, 2*self.args.embed_dim, 2*self.args.embed_dim)
-        w_r2 = w_r2.view(-1, 2*self.args.embed_dim, 2*self.args.embed_dim)
-        x = torch.bmm(w_r0, x.unsqueeze(2)).squeeze(2)
-        x += self.b0[r].unsqueeze(1)
+        w_r = self.w_r[r]
+        w_r = w_r.view(-1, 2 * self.args.embed_dim, 2 * self.args.embed_dim)
+        x1 = torch.bmm(w_r, x.unsqueeze(2)).squeeze(2)
+        x1 += self.b_r[r].unsqueeze(1)
+        x1 = self.hid_dropout(x1)
+        x1 = self.bn0(x1)
+        x1 = self.activation(x1)
+
+        x2 = torch.cat([f(x) for f in self.mult_w], dim=-1)
+        x2 = self.hid_dropout(x2)
+        x2 = self.bn1(x2)
+        x2 = self.activation(x2)
+
+        x = self.transform(torch.cat([x1, x2], dim=-1))
         x = self.hid_dropout(x)
-        x = self.bn0(x)
-        x = self.activation(x)
-        x = torch.bmm(w_r1, x.unsqueeze(2)).squeeze(2)
-        x += self.b1[r].unsqueeze(1)
-        x = self.hid_dropout(x)
-        x = self.bn1(x)
+        x = self.bn2(x)
         x = self.activation(x)
 
-        x = self.transform(x)
-        x = self.hid_dropout(x)
-        x = self.bn3(x)
-        x = self.activation(x)
-
-        pred = torch.mm(x, self.ent_emb.permute(1,0))
+        pred = torch.mm(x, self.ent_emb.permute(1, 0))
         pred += self.bias.expand_as(pred)
 
         pred = torch.sigmoid(pred)
