@@ -13,6 +13,7 @@ class RelinearE(nn.Module):
         self.activation = nn.ReLU()
         self.transform = nn.Linear(2*self.args.embed_dim, self.args.embed_dim)
         self.w_r = nn.Parameter(torch.randn(2*self.args.num_rel, 2*self.args.embed_dim*2*self.args.embed_dim))
+        self.v_r = nn.Parameter(torch.randn(2*self.args.num_rel, 2*self.args.embed_dim))
         self.mult_w = nn.ModuleList([nn.Linear(2*self.args.embed_dim, 2*self.args.embed_dim) for _ in range(self.args.heads)])
         self.b_r = nn.Parameter(torch.zeros(2*self.args.num_rel))
         self.bn0 = torch.nn.BatchNorm1d(2*self.args.embed_dim)
@@ -39,10 +40,14 @@ class RelinearE(nn.Module):
         head = self.ent_emb[h]
         rel = self.rel_emb[r]
         x = self.inp_dropout(torch.cat([head, rel], dim=-1))
-        w_r = self.w_r[r]
-        w_r = w_r.view(-1, 2 * self.args.embed_dim, 2 * self.args.embed_dim)
-        x1 = torch.bmm(w_r, x.unsqueeze(2)).squeeze(2)
-        x1 += self.b_r[r].unsqueeze(1)
+        if self.args.operation == 'linear':
+            w_r = self.w_r[r]
+            w_r = w_r.view(-1, 2 * self.args.embed_dim, 2 * self.args.embed_dim)
+            x1 = torch.bmm(w_r, x.unsqueeze(2)).squeeze(2)
+            x1 += self.b_r[r].unsqueeze(1)
+        elif self.args.operation == 'add':
+            v_r = self.v_r[r]
+            x1 = x + v_r
         x1 = self.hid_dropout(x1)
         x1 = self.bn0(x1)
         x1 = self.activation(x1)

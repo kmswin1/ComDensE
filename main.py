@@ -447,6 +447,7 @@ if __name__ == "__main__":
     parser.add_argument('--layers',      	dest="layers",          	default=2,     	type=int,       	help='Number layers')
     parser.add_argument('--heads',      	dest="heads",          	default=1,     	type=int,       	help='Number heads')
     parser.add_argument('--model',      	dest="model",          	default='relineare',     	type=str,       	help='Model Selection')
+    parser.add_argument('--operation',      	dest="operation",          	default='linear',     	type=str,       	help='Function of Relation specific operation')
 
     # Logging parameters
     parser.add_argument('--logdir',    	dest="log_dir",       	default='./log/',               		help='Log directory')
