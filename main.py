@@ -166,10 +166,10 @@ class Main(object):
         Creates the computational graph for model and initializes it
 
         """
-        if self.p.model == 'relineare':
-            model = RelinearE(self.p)
-        elif self.p.model == 'multihead':
-            model = MultiHead(self.p)
+        if self.p.model == 'dense':
+            model = DensE(self.p)
+        elif self.p.model == 'shared':
+            model = SharedDensE(self.p)
         elif self.p.model == 'multilayer':
             model = MultiLayer(self.p)
         model.to(self.device)
@@ -446,7 +446,7 @@ if __name__ == "__main__":
     parser.add_argument('--inp_drop',  	dest="inp_drop",      	default=0.4,    	type=float,     	help='Dropout for Input layer')
     parser.add_argument('--layers',      	dest="layers",          	default=2,     	type=int,       	help='Number layers')
     parser.add_argument('--heads',      	dest="heads",          	default=1,     	type=int,       	help='Number heads')
-    parser.add_argument('--model',      	dest="model",          	default='relineare',     	type=str,       	help='Model Selection')
+    parser.add_argument('--model',      	dest="model",          	default='dense',     	type=str,       	help='Model Selection')
     parser.add_argument('--operation',      	dest="operation",          	default='linear',     	type=str,       	help='Function of Relation specific operation')
 
     # Logging parameters

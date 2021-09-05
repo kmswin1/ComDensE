@@ -2,9 +2,9 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-class RelinearE(nn.Module):
+class DensE(nn.Module):
     def __init__(self, args):
-        super(RelinearE, self).__init__()
+        super(DensE, self).__init__()
         self.args = args
         self.ent_emb = nn.Parameter(torch.randn(self.args.num_ent, self.args.embed_dim))
         self.rel_emb = nn.Parameter(torch.randn(2*self.args.num_rel, self.args.embed_dim))
@@ -68,9 +68,9 @@ class RelinearE(nn.Module):
         pred = torch.sigmoid(pred)
         return pred
 
-class MultiHead(nn.Module):
+class SharedDensE(nn.Module):
     def __init__(self, args):
-        super(MultiHead, self).__init__()
+        super(SharedDensE, self).__init__()
         self.args = args
         self.ent_emb = nn.Parameter(torch.randn(self.args.num_ent, self.args.embed_dim))
         self.rel_emb = nn.Parameter(torch.randn(2*self.args.num_rel, self.args.embed_dim))
