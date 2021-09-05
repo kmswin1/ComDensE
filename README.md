@@ -1,6 +1,6 @@
 # DensE
 
-## model list : dense, multilayer, shared
+## model list : dense, shared, multilayer
 
 ### python main.py --model "model_name" --data "dataset_name"
 
