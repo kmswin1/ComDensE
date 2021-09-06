@@ -3,6 +3,7 @@ from ordered_set import OrderedSet
 from torch.utils.data import DataLoader
 from data_loader import *
 from model import *
+import os
 
 
 class Main(object):
@@ -420,6 +421,7 @@ class Main(object):
 
 
 if __name__ == "__main__":
+    os.system('mkdir -p torch_saved')
     parser = argparse.ArgumentParser(description="Parser For Arguments", formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
     # Dataset and Experiment name
