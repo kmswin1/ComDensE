@@ -14,7 +14,7 @@ class DensE(nn.Module):
         self.transform = nn.Linear(2*self.args.embed_dim, self.args.embed_dim)
         self.w_r = nn.Parameter(torch.randn(2*self.args.num_rel, 2*self.args.embed_dim*2*self.args.embed_dim))
         self.v_r = nn.Parameter(torch.randn(2*self.args.num_rel, 2*self.args.embed_dim))
-        self.mult_w = nn.ModuleList([nn.Linear(2*self.args.embed_dim, 2*self.args.embed_dim) for _ in range(self.args.heads)])
+        self.mult_w = nn.ModuleList([nn.Linear(2*self.args.embed_dim, 2*self.args.embed_dim) for _ in range(self.args.matsize)])
         self.b_r = nn.Parameter(torch.zeros(2*self.args.num_rel))
         self.bn0 = torch.nn.BatchNorm1d(2*self.args.embed_dim)
         self.bn1 = torch.nn.BatchNorm1d(self.args.matsize*2*self.args.embed_dim)
