@@ -11,7 +11,7 @@ class DensE(nn.Module):
         self.inp_dropout = nn.Dropout(self.args.inp_drop)
         self.hid_dropout = nn.Dropout(self.args.hid_drop)
         self.activation = nn.ReLU()
-        self.transform = nn.Linear(2*self.args.embed_dim, self.args.embed_dim)
+        self.transform = nn.Linear((self.args.matsize+1)*2*self.args.embed_dim, self.args.embed_dim)
         self.w_r = nn.Parameter(torch.randn(2*self.args.num_rel, 2*self.args.embed_dim*2*self.args.embed_dim))
         self.v_r = nn.Parameter(torch.randn(2*self.args.num_rel, 2*self.args.embed_dim))
         self.mult_w = nn.ModuleList([nn.Linear(2*self.args.embed_dim, 2*self.args.embed_dim) for _ in range(self.args.matsize)])
