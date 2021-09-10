@@ -255,7 +255,7 @@ class Main(object):
         self.best_val_mrr 		= state['best_val']['mrr']
         self.best_val 			= state['best_val']
 
-        self.model.load_state_dict(state_dict)
+        self.model.load_state_dict(state_dict, strict=False)
         self.optimizer.load_state_dict(state['optimizer'])
 
     def evaluate(self, split, epoch=0):
@@ -449,7 +449,6 @@ if __name__ == "__main__":
     parser.add_argument('--depth',      	dest="depth",          	default=2,     	type=int,       	help='Depth of Common Layer')
     parser.add_argument('--width',      	dest="width",          	default=1,     	type=int,       	help='Width of Common Layer')
     parser.add_argument('--model',      	dest="model",          	default='dense',     	type=str,       	help='Model Selection')
-    parser.add_argument('--operation',      	dest="operation",          	default='linear',     	type=str,       	help='Function of Relation specific operation')
 
     # Logging parameters
     parser.add_argument('--logdir',    	dest="log_dir",       	default='./log/',               		help='Log directory')
