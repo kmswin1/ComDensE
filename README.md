@@ -2,7 +2,7 @@
 
 ## model list : dense, shared, multilayer
 
-### python main.py --model "model_name" --data "dataset_name" --name "model_name"
+### python main.py --model "model" --data "dataset_name" --name "name"
 
 ### download trained models : https://drive.google.com/drive/folders/1WY5UzJ08bgEPWFXqxFtjDLHin3KN62V8?usp=sharing
 
