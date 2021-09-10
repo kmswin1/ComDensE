@@ -11,13 +11,13 @@ class DensE(nn.Module):
         self.inp_dropout = nn.Dropout(self.args.inp_drop)
         self.hid_dropout = nn.Dropout(self.args.hid_drop)
         self.activation = nn.ReLU()
-        self.transform = nn.Linear((self.args.matsize+1)*2*self.args.embed_dim, self.args.embed_dim)
+        self.transform = nn.Linear((self.args.width+1)*2*self.args.embed_dim, self.args.embed_dim)
         self.w_r = nn.Parameter(torch.randn(2*self.args.num_rel, 2*self.args.embed_dim*2*self.args.embed_dim))
         self.v_r = nn.Parameter(torch.randn(2*self.args.num_rel, 2*self.args.embed_dim))
-        self.mult_w = nn.ModuleList([nn.Linear(2*self.args.embed_dim, 2*self.args.embed_dim) for _ in range(self.args.matsize)])
+        self.mult_w = nn.ModuleList([nn.Linear(2*self.args.embed_dim, 2*self.args.embed_dim) for _ in range(self.args.width)])
         self.b_r = nn.Parameter(torch.zeros(2*self.args.num_rel))
         self.bn0 = torch.nn.BatchNorm1d(2*self.args.embed_dim)
-        self.bn1 = torch.nn.BatchNorm1d(self.args.matsize*2*self.args.embed_dim)
+        self.bn1 = torch.nn.BatchNorm1d(self.args.width*2*self.args.embed_dim)
         self.bn2 = torch.nn.BatchNorm1d(self.args.embed_dim)
         self.register_parameter('bias', nn.Parameter(torch.zeros(self.args.num_ent)))
 
@@ -76,9 +76,9 @@ class SharedDensE(nn.Module):
         self.inp_dropout = nn.Dropout(self.args.inp_drop)
         self.hid_dropout = nn.Dropout(self.args.hid_drop)
         self.activation = nn.ReLU()
-        self.w_r = nn.ModuleList([nn.Linear(2*self.args.embed_dim, 2*self.args.embed_dim) for _ in range(self.args.matsize)])
-        self.transform = nn.Linear(self.args.matsize*2*self.args.embed_dim, self.args.embed_dim)
-        self.bn0 = torch.nn.BatchNorm1d(self.args.matsize*2*self.args.embed_dim)
+        self.w_r = nn.ModuleList([nn.Linear(2*self.args.embed_dim, 2*self.args.embed_dim) for _ in range(self.args.width)])
+        self.transform = nn.Linear(self.args.width*2*self.args.embed_dim, self.args.embed_dim)
+        self.bn0 = torch.nn.BatchNorm1d(self.args.width*2*self.args.embed_dim)
         self.bn3 = torch.nn.BatchNorm1d(self.args.embed_dim)
         self.register_parameter('bias', nn.Parameter(torch.zeros(self.args.num_ent)))
         self.bceloss = torch.nn.BCELoss()
@@ -161,25 +161,25 @@ class MultiLayer(nn.Module):
         x = self.bn0(x)
         x = self.activation(x)
 
-        if self.args.layers >= 3:
+        if self.args.depth >= 3:
             x = self.w_rr(x)
             x = self.hid_dropout(x)
             x = self.bn1(x)
             x = self.activation(x)
 
-        if self.args.layers >= 4:
+        if self.args.depth >= 4:
             x = self.w_rrr(x)
             x = self.hid_dropout(x)
             x = self.bn2(x)
             x = self.activation(x)
 
-        if self.args.layers >= 5:
+        if self.args.depth >= 5:
             x = self.w_rrr(x)
             x = self.hid_dropout(x)
             x = self.bn3(x)
             x = self.activation(x)
 
-        if self.args.layers >= 6:
+        if self.args.depth >= 6:
             x = self.w_rrr(x)
             x = self.hid_dropout(x)
             x = self.bn4(x)

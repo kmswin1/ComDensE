@@ -443,11 +443,11 @@ if __name__ == "__main__":
 
     # Model parameters
     parser.add_argument("--lbl_smooth",     dest='lbl_smooth',	default=0.1,		type=float,		help='Label smoothing for true labels')
-    parser.add_argument("--embed_dim",	type=int,              	default=256,                   		help='Embedding dimension for entity and relation, ignored if k_h and k_w are set')
+    parser.add_argument("--embed_dim",	type=int,              	default=256,                   		help='Embedding dimension for entity and relation')
     parser.add_argument('--hid_drop',  	dest="hid_drop",      	default=0.5,    	type=float,     	help='Dropout for Hidden layer')
     parser.add_argument('--inp_drop',  	dest="inp_drop",      	default=0.4,    	type=float,     	help='Dropout for Input layer')
-    parser.add_argument('--layers',      	dest="layers",          	default=2,     	type=int,       	help='Number layers')
-    parser.add_argument('--matsize',      	dest="matsize",          	default=1,     	type=int,       	help='Number heads')
+    parser.add_argument('--depth',      	dest="depth",          	default=2,     	type=int,       	help='Depth of Common Layer')
+    parser.add_argument('--width',      	dest="width",          	default=1,     	type=int,       	help='Width of Common Layer')
     parser.add_argument('--model',      	dest="model",          	default='dense',     	type=str,       	help='Model Selection')
     parser.add_argument('--operation',      	dest="operation",          	default='linear',     	type=str,       	help='Function of Relation specific operation')
 
