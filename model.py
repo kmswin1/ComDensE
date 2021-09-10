@@ -18,7 +18,7 @@ class DensE(nn.Module):
         self.b0 = nn.Parameter(torch.zeros(2 * self.args.num_rel))
         self.bn0 = torch.nn.BatchNorm1d(2 * self.args.embed_dim)
         self.bn3 = torch.nn.BatchNorm1d(self.args.embed_dim)
-        self.bn4 = torch.nn.BatchNorm1d(self.args.width * 2 * self.args.embed_dim)
+        self.bn4 = torch.nn.BatchNorm1d((self.args.width +1) * 2 * self.args.embed_dim)
         self.register_parameter('bias', nn.Parameter(torch.zeros(self.args.num_ent)))
 
         self.bceloss = torch.nn.BCELoss()
