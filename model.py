@@ -26,8 +26,6 @@ class DensE(nn.Module):
         torch.nn.init.xavier_normal_(self.ent_emb.data)
         torch.nn.init.xavier_normal_(self.rel_emb.data)
         torch.nn.init.xavier_normal_(self.w_r0.data)
-        torch.nn.init.xavier_normal_(self.w_r1.data)
-        torch.nn.init.xavier_normal_(self.w_r2.data)
         torch.nn.init.xavier_normal_(self.transform.weight)
 
     def loss(self, pred, true_label=None, sub_samp=None):
