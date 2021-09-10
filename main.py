@@ -256,7 +256,7 @@ class Main(object):
         self.best_val 			= state['best_val']
 
         self.model.load_state_dict(state_dict, strict=False)
-        self.optimizer.load_state_dict(state['optimizer'])
+        self.optimizer.load_state_dict(state['optimizer'], strict=False)
 
     def evaluate(self, split, epoch=0):
         """
