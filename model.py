@@ -11,14 +11,14 @@ class DensE(nn.Module):
         self.inp_dropout = nn.Dropout(self.args.inp_drop)
         self.hid_dropout = nn.Dropout(self.args.hid_drop)
         self.activation = nn.ReLU()
-        self.transform = nn.Linear((self.args.heads + 1) * 2 * self.args.embed_dim, self.args.embed_dim)
+        self.transform = nn.Linear((self.args.width + 1) * 2 * self.args.embed_dim, self.args.embed_dim)
         self.ww = nn.ModuleList(
-            [nn.Linear(2 * self.args.embed_dim, 2 * self.args.embed_dim) for _ in range(self.args.heads)])
+            [nn.Linear(2 * self.args.embed_dim, 2 * self.args.embed_dim) for _ in range(self.args.width)])
         self.w_r0 = nn.Parameter(torch.randn(2 * self.args.num_rel, 2 * self.args.embed_dim * 2 * self.args.embed_dim))
         self.b0 = nn.Parameter(torch.zeros(2 * self.args.num_rel))
         self.bn0 = torch.nn.BatchNorm1d(2 * self.args.embed_dim)
         self.bn3 = torch.nn.BatchNorm1d(self.args.embed_dim)
-        self.bn4 = torch.nn.BatchNorm1d(self.args.heads * 2 * self.args.embed_dim)
+        self.bn4 = torch.nn.BatchNorm1d(self.args.width * 2 * self.args.embed_dim)
         self.register_parameter('bias', nn.Parameter(torch.zeros(self.args.num_ent)))
 
         self.bceloss = torch.nn.BCELoss()
