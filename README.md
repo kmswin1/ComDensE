@@ -4,7 +4,7 @@
 
 ### python main.py --model "model" --data "dataset_name" --name "name"
 
-### download trained models : https://drive.google.com/drive/folders/1WY5UzJ08bgEPWFXqxFtjDLHin3KN62V8?usp=sharing
+### download trained models : https://drive.google.com/drive/folders/1GeGdZgnanNYbEwc_rqMQM71Lv16M5F0P?usp=sharing
 
 ## evaluation)
 ### python main.py --model dense --width 2 --restore --epoch 0 --name DensE_FB15k-237 --data FB15k-237
