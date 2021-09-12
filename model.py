@@ -24,7 +24,7 @@ class DensE(nn.Module):
         self.bceloss = torch.nn.BCELoss()
 
         for w in self.ww:
-            torch.nn.init.xavier_normal_(w)
+            torch.nn.init.xavier_normal_(w.weight)
         torch.nn.init.xavier_normal_(self.ent_emb.data)
         torch.nn.init.xavier_normal_(self.rel_emb.data)
         torch.nn.init.xavier_normal_(self.w_r0.data)
