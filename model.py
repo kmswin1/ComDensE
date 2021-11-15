@@ -20,6 +20,8 @@ class DensE(nn.Module):
         self.bn3 = torch.nn.BatchNorm1d(self.args.embed_dim)
         self.bn4 = torch.nn.BatchNorm1d(self.args.width * 2 * self.args.embed_dim)
         self.register_parameter('bias', nn.Parameter(torch.zeros(self.args.num_ent)))
+        self.gate1 = nn.Linear((self.args.width + 1) * 2 * self.args.embed_dim, 1)
+        self.gate2 = nn.Linear((self.args.width + 1) * 2 * self.args.embed_dim, 1)
 
         self.bceloss = torch.nn.BCELoss()
 
@@ -53,7 +55,9 @@ class DensE(nn.Module):
         x2 = self.bn4(x2)
         x2 = self.activation(x2)
 
-        x = self.transform(torch.cat([x1, x2], dim=-1))
+        a1 = torch.sigmoid(self.gate1(torch.cat([x1, x2], dim=-1)))
+        a2 = torch.sigmoid(self.gate2(torch.cat([x1, x2], dim=-1)))
+        x = self.transform(torch.cat([a1*x1, a2*x2], dim=-1))
         x = self.hid_dropout(x)
         x = self.bn3(x)
         x = self.activation(x)
