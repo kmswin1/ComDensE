@@ -167,7 +167,7 @@ class Main(object):
         Creates the computational graph for model and initializes it
 
         """
-        if self.p.model == 'dense':
+        if self.p.model == 'comdense':
             model = DensE(self.p)
         elif self.p.model == 'shared':
             model = SharedDensE(self.p)
@@ -449,7 +449,7 @@ if __name__ == "__main__":
     parser.add_argument('--inp_drop',  	dest="inp_drop",      	default=0.4,    	type=float,     	help='Dropout for Input layer')
     parser.add_argument('--depth',      	dest="depth",          	default=2,     	type=int,       	help='Depth of Common Layer')
     parser.add_argument('--width',      	dest="width",          	default=1,     	type=int,       	help='Width of Common Layer')
-    parser.add_argument('--model',      	dest="model",          	default='dense',     	type=str,       	help='Model Selection')
+    parser.add_argument('--model',      	dest="model",          	default='comdense',     	type=str,       	help='Model Selection')
 
     # Logging parameters
     parser.add_argument('--logdir',    	dest="log_dir",       	default='./log/',               		help='Log directory')
