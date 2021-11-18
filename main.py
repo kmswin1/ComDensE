@@ -449,6 +449,7 @@ if __name__ == "__main__":
     parser.add_argument('--inp_drop',  	dest="inp_drop",      	default=0.4,    	type=float,     	help='Dropout for Input layer')
     parser.add_argument('--depth',      	dest="depth",          	default=2,     	type=int,       	help='Depth of Common Layer')
     parser.add_argument('--width',      	dest="width",          	default=1,     	type=int,       	help='Width of Common Layer')
+    parser.add_argument('--matsize',      	dest="matsize",          	default=256,     	type=int,       	help='Size of Matrix')
     parser.add_argument('--model',      	dest="model",          	default='comdense',     	type=str,       	help='Model Selection')
 
     # Logging parameters

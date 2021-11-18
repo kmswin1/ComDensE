@@ -11,19 +11,19 @@ class DensE(nn.Module):
         self.inp_dropout = nn.Dropout(self.args.inp_drop)
         self.hid_dropout = nn.Dropout(self.args.hid_drop)
         self.activation = nn.ReLU()
-        self.transform = nn.Linear((self.args.width + 1) * 2 * self.args.embed_dim, self.args.embed_dim)
+        self.transform = nn.Linear((self.args.width + 1) * self.args.matsize, self.args.embed_dim)
         self.ww = nn.ModuleList(
-            [nn.Linear(2 * self.args.embed_dim, 2 * self.args.embed_dim) for _ in range(self.args.width)])
-        self.w_r0 = nn.Parameter(torch.randn(2 * self.args.num_rel, 2 * self.args.embed_dim * 2 * self.args.embed_dim))
+            [nn.Linear(2 * self.args.embed_dim, self.args.matsize) for _ in range(self.args.width)])
+        self.w_r0 = nn.Parameter(torch.randn(2 * self.args.num_rel, 2 * self.args.embed_dim * self.args.matsize))
         self.b0 = nn.Parameter(torch.zeros(2 * self.args.num_rel))
-        self.bn0 = torch.nn.BatchNorm1d(2 * self.args.embed_dim)
+        self.bn0 = torch.nn.BatchNorm1d(self.args.matsize)
         self.bn3 = torch.nn.BatchNorm1d(self.args.embed_dim)
-        self.bn4 = torch.nn.BatchNorm1d(self.args.width * 2 * self.args.embed_dim)
+        self.bn4 = torch.nn.BatchNorm1d(self.args.width * self.args.matsize)
         self.register_parameter('bias', nn.Parameter(torch.zeros(self.args.num_ent)))
-        self.gate1 = nn.Linear(self.args.width * 2 * self.args.embed_dim, 1)
-        self.gate2 = nn.Linear(2 * self.args.embed_dim, 1)
-        self.gate3 = nn.Linear(self.args.width * 2 * self.args.embed_dim, 1)
-        self.gate4 = nn.Linear(2 * self.args.embed_dim, 1)
+        self.gate1 = nn.Linear(self.args.width * self.args.matsize, 1)
+        self.gate2 = nn.Linear(self.args.matsize, 1)
+        self.gate3 = nn.Linear(self.args.width * self.args.matsize, 1)
+        self.gate4 = nn.Linear(self.args.matsize, 1)
 
         self.bceloss = torch.nn.BCELoss()
 
@@ -45,7 +45,7 @@ class DensE(nn.Module):
         rel = self.rel_emb[r]
         x = self.inp_dropout(torch.cat([head, rel], dim=-1))
         w_r0 = self.w_r0[r]
-        w_r0 = w_r0.view(-1, 2 * self.args.embed_dim, 2 * self.args.embed_dim)
+        w_r0 = w_r0.view(-1, 2 * self.args.embed_dim, self.args.matsize)
         x1 = torch.bmm(w_r0, x.unsqueeze(2)).squeeze(2)
         x1 += self.b0[r].unsqueeze(1)
         x1 = self.hid_dropout(x1)
