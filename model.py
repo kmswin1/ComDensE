@@ -20,8 +20,10 @@ class DensE(nn.Module):
         self.bn3 = torch.nn.BatchNorm1d(self.args.embed_dim)
         self.bn4 = torch.nn.BatchNorm1d(self.args.width * 2 * self.args.embed_dim)
         self.register_parameter('bias', nn.Parameter(torch.zeros(self.args.num_ent)))
-        self.gate1 = nn.Linear((self.args.width + 1) * 2 * self.args.embed_dim, 1)
-        self.gate2 = nn.Linear((self.args.width + 1) * 2 * self.args.embed_dim, 1)
+        self.gate1 = nn.Linear(self.args.width * 2 * self.args.embed_dim, self.args.width * 2 * self.args.embed_dim)
+        self.gate2 = nn.Linear(2 * self.args.embed_dim, 2 * self.args.embed_dim)
+        self.gate3 = nn.Linear(self.args.width * 2 * self.args.embed_dim, self.args.width * 2 * self.args.embed_dim)
+        self.gate4 = nn.Linear(2 * self.args.embed_dim, 2 * self.args.embed_dim)
 
         self.bceloss = torch.nn.BCELoss()
 
@@ -55,9 +57,11 @@ class DensE(nn.Module):
         x2 = self.bn4(x2)
         x2 = self.activation(x2)
 
-        a1 = torch.sigmoid(self.gate1(torch.cat([x1, x2], dim=-1)))
-        a2 = torch.sigmoid(self.gate2(torch.cat([x1, x2], dim=-1)))
-        x = self.transform(torch.cat([a1*x1, a2*x2], dim=-1))
+        a1 = self.gate1(x2)
+        a2 = self.gate2(x1)
+        b1 = self.gate3(x2)
+        b2 = self.gate4(x1)
+        x = self.transform(torch.cat([a1*x1+b1, a2*x2+b2], dim=-1))
         x = self.hid_dropout(x)
         x = self.bn3(x)
         x = self.activation(x)
