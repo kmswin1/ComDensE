@@ -45,7 +45,7 @@ class DensE(nn.Module):
         rel = self.rel_emb[r]
         x = self.inp_dropout(torch.cat([head, rel], dim=-1))
         w_r0 = self.w_r0[r]
-        w_r0 = w_r0.view(-1, 2 * self.args.embed_dim, self.args.matsize)
+        w_r0 = w_r0.view(-1, self.args.matsize, 2 * self.args.embed_dim)
         x1 = torch.bmm(w_r0, x.unsqueeze(2)).squeeze(2)
         x1 += self.b0[r].unsqueeze(1)
         x1 = self.hid_dropout(x1)
