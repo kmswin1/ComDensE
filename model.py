@@ -50,12 +50,12 @@ class DensE(nn.Module):
         x1 += self.b0[r].unsqueeze(1)
         x1 = self.hid_dropout(x1)
         x1 = self.bn0(x1)
-        x1 = self.activation(x1)
+        #x1 = self.activation(x1)
 
         x2 = torch.cat([f(x) for f in self.ww], dim=-1)
         x2 = self.hid_dropout(x2)
         x2 = self.bn4(x2)
-        x2 = self.activation(x2)
+        #x2 = self.activation(x2)
 
         a1 = torch.sigmoid(self.gate1(x2))
         a2 = torch.sigmoid(self.gate2(x1))
