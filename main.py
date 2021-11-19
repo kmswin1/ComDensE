@@ -174,6 +174,8 @@ class Main(object):
         elif self.p.model == 'multilayer':
             model = MultiLayer(self.p)
         model.to(self.device)
+        params = model.parameters()
+        print(sum([p.numel() for p in params]))
         return model
 
     def add_optimizer(self, parameters):
