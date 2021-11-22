@@ -168,7 +168,7 @@ class Main(object):
 
         """
         if self.p.model == 'comdense':
-            model = DensE(self.p)
+            model = ComDensE(self.p)
         elif self.p.model == 'shared':
             model = SharedDensE(self.p)
         elif self.p.model == 'multilayer':
