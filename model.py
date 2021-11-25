@@ -20,10 +20,6 @@ class ComDensE(nn.Module):
         self.bn3 = torch.nn.BatchNorm1d(self.args.embed_dim)
         self.bn4 = torch.nn.BatchNorm1d(self.args.width * self.args.matsize)
         self.register_parameter('bias', nn.Parameter(torch.zeros(self.args.num_ent)))
-        self.gate1 = nn.Linear(self.args.width * self.args.matsize, 1)
-        self.gate2 = nn.Linear(self.args.matsize, 1)
-        self.gate3 = nn.Linear(self.args.width * self.args.matsize, 1)
-        self.gate4 = nn.Linear(self.args.matsize, 1)
 
         self.bceloss = torch.nn.BCELoss()
 
@@ -56,12 +52,7 @@ class ComDensE(nn.Module):
         x2 = self.hid_dropout(x2)
         x2 = self.bn4(x2)
         x2 = self.activation(x2)
-
-        a1 = torch.sigmoid(self.gate1(x2))
-        a2 = torch.sigmoid(self.gate2(x1))
-        b1 = torch.sigmoid(self.gate3(x2))
-        b2 = torch.sigmoid(self.gate4(x1))
-        x = self.transform(torch.cat([self.activation(a1*x1+b1), self.activation(a2*x2+b2)], dim=-1))
+        x = self.transform(torch.cat([self.activation(x1), self.activation(x2)], dim=-1))
         x = self.hid_dropout(x)
         x = self.bn3(x)
         x = self.activation(x)
