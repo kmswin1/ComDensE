@@ -52,7 +52,7 @@ class CombinE(nn.Module):
         x2 = self.hid_dropout(x2)
         x2 = self.bn4(x2)
         x2 = self.activation(x2)
-        x = self.transform(torch.cat([self.activation(x1), self.activation(x2)], dim=-1))
+        x = self.transform(torch.cat([x1, x2], dim=-1))
         x = self.hid_dropout(x)
         x = self.bn3(x)
         x = self.activation(x)
