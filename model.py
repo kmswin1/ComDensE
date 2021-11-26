@@ -29,7 +29,7 @@ class ComDensE(nn.Module):
             torch.nn.init.xavier_normal_(w.weight)
         torch.nn.init.xavier_normal_(self.ent_emb.data)
         torch.nn.init.xavier_normal_(self.rel_emb.data)
-        torch.nn.init.xavier_normal_(self.w_r0.data)
+        #torch.nn.init.xavier_normal_(self.w_r0.data)
         torch.nn.init.xavier_normal_(self.transform.weight)
         torch.nn.init.xavier_normal_(self.gate1.weight)
         torch.nn.init.xavier_normal_(self.gate2.weight)
