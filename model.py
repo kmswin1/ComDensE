@@ -11,15 +11,17 @@ class ComDensE(nn.Module):
         self.inp_dropout = nn.Dropout(self.args.inp_drop)
         self.hid_dropout = nn.Dropout(self.args.hid_drop)
         self.activation = nn.ReLU()
-        self.transform = nn.Linear((self.args.width + 1) * self.args.matsize, self.args.embed_dim)
+        self.transform = nn.Linear((self.args.width) * self.args.matsize, self.args.embed_dim)
         self.ww = nn.ModuleList(
             [nn.Linear(2 * self.args.embed_dim, self.args.matsize) for _ in range(self.args.width)])
-        self.w_r0 = nn.Parameter(torch.randn(2 * self.args.num_rel, 2 * self.args.embed_dim * self.args.matsize))
+        #self.w_r0 = nn.Parameter(torch.randn(2 * self.args.num_rel, 2 * self.args.embed_dim * self.args.matsize))
         self.b0 = nn.Parameter(torch.zeros(2 * self.args.num_rel))
-        self.bn0 = torch.nn.BatchNorm1d(self.args.matsize)
-        self.bn3 = torch.nn.BatchNorm1d(self.args.embed_dim)
+        #self.bn0 = torch.nn.BatchNorm1d(self.args.matsize)
+        #self.bn3 = torch.nn.BatchNorm1d(self.args.embed_dim)
         self.bn4 = torch.nn.BatchNorm1d(self.args.width * self.args.matsize)
         self.register_parameter('bias', nn.Parameter(torch.zeros(self.args.num_ent)))
+        self.gate1(nn.Linear(self.args.embed_dim, 1))
+        self.gate2(nn.Linear(self.args.embed_dim, 1))
 
         self.bceloss = torch.nn.BCELoss()
 
@@ -29,6 +31,8 @@ class ComDensE(nn.Module):
         torch.nn.init.xavier_normal_(self.rel_emb.data)
         torch.nn.init.xavier_normal_(self.w_r0.data)
         torch.nn.init.xavier_normal_(self.transform.weight)
+        torch.nn.init.xavier_normal_(self.gate1.weight)
+        torch.nn.init.xavier_normal_(self.gate2.weight)
 
     def loss(self, pred, true_label=None, sub_samp=None):
         label_pos = true_label[0]
@@ -40,19 +44,14 @@ class ComDensE(nn.Module):
         head = self.ent_emb[h]
         rel = self.rel_emb[r]
         x = self.inp_dropout(torch.cat([head, rel], dim=-1))
-        w_r0 = self.w_r0[r]
-        w_r0 = w_r0.view(-1, self.args.matsize, 2 * self.args.embed_dim)
-        x1 = torch.bmm(w_r0, x.unsqueeze(2)).squeeze(2)
-        x1 += self.b0[r].unsqueeze(1)
-        x1 = self.hid_dropout(x1)
-        x1 = self.bn0(x1)
-        x1 = self.activation(x1)
+        a = torch.sigmoid(self.gate1rel)
+        b = torch.sigmoid(self.gate1(rel))
 
         x2 = torch.cat([f(x) for f in self.ww], dim=-1)
         x2 = self.hid_dropout(x2)
         x2 = self.bn4(x2)
         x2 = self.activation(x2)
-        x = self.transform(torch.cat([self.activation(x1), self.activation(x2)], dim=-1))
+        x = self.transform(torch.cat([a*x2+b], dim=-1))
         x = self.hid_dropout(x)
         x = self.bn3(x)
         x = self.activation(x)
