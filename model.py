@@ -44,8 +44,8 @@ class ComDensE(nn.Module):
         head = self.ent_emb[h]
         rel = self.rel_emb[r]
         x = self.inp_dropout(torch.cat([head, rel], dim=-1))
-        a = torch.sigmoid(self.gate1rel)
-        b = torch.sigmoid(self.gate1(rel))
+        a = torch.sigmoid(self.gate1(rel))
+        b = torch.sigmoid(self.gate2(rel))
 
         x2 = torch.cat([f(x) for f in self.ww], dim=-1)
         x2 = self.hid_dropout(x2)
