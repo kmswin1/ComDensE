@@ -167,13 +167,15 @@ class Main(object):
         Creates the computational graph for model and initializes it
 
         """
-        if self.p.model == 'dense':
-            model = DensE(self.p)
+        if self.p.model == 'comdense':
+            model = ComDensE(self.p)
         elif self.p.model == 'shared':
             model = SharedDensE(self.p)
         elif self.p.model == 'multilayer':
             model = MultiLayer(self.p)
         model.to(self.device)
+        params = model.parameters()
+        print(sum([p.numel() for p in params]))
         return model
 
     def add_optimizer(self, parameters):
@@ -449,7 +451,8 @@ if __name__ == "__main__":
     parser.add_argument('--inp_drop',  	dest="inp_drop",      	default=0.4,    	type=float,     	help='Dropout for Input layer')
     parser.add_argument('--depth',      	dest="depth",          	default=2,     	type=int,       	help='Depth of Common Layer')
     parser.add_argument('--width',      	dest="width",          	default=1,     	type=int,       	help='Width of Common Layer')
-    parser.add_argument('--model',      	dest="model",          	default='dense',     	type=str,       	help='Model Selection')
+    parser.add_argument('--matsize',      	dest="matsize",          	default=256,     	type=int,       	help='Size of Matrix')
+    parser.add_argument('--model',      	dest="model",          	default='comdense',     	type=str,       	help='Model Selection')
 
     # Logging parameters
     parser.add_argument('--logdir',    	dest="log_dir",       	default='./log/',               		help='Log directory')
