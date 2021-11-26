@@ -20,8 +20,8 @@ class ComDensE(nn.Module):
         #self.bn3 = torch.nn.BatchNorm1d(self.args.embed_dim)
         self.bn4 = torch.nn.BatchNorm1d(self.args.width * self.args.matsize)
         self.register_parameter('bias', nn.Parameter(torch.zeros(self.args.num_ent)))
-        self.gate1(nn.Linear(self.args.embed_dim, 1))
-        self.gate2(nn.Linear(self.args.embed_dim, 1))
+        self.gate1 = nn.Linear(self.args.embed_dim, 1)
+        self.gate2 = nn.Linear(self.args.embed_dim, 1)
 
         self.bceloss = torch.nn.BCELoss()
 
