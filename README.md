@@ -1,4 +1,4 @@
-# DensE
+# CombinE
 
 ## model list : combine, shared_only, multilayer(shared_only)
 
