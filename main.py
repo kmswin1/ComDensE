@@ -167,8 +167,8 @@ class Main(object):
         Creates the computational graph for model and initializes it
 
         """
-        if self.p.model == 'combine':
-            model = CombinE(self.p)
+        if self.p.model == 'comdense':
+            model = ComDensE(self.p)
         elif self.p.model == 'shared':
             model = SharedDensE(self.p)
         elif self.p.model == 'multilayer':
@@ -452,7 +452,7 @@ if __name__ == "__main__":
     parser.add_argument('--depth',      	dest="depth",          	default=2,     	type=int,       	help='Depth of Common Layer')
     parser.add_argument('--width',      	dest="width",          	default=1,     	type=int,       	help='Width of Common Layer')
     parser.add_argument('--matsize',      	dest="matsize",          	default=256,     	type=int,       	help='Size of Matrix')
-    parser.add_argument('--model',      	dest="model",          	default='combine',     	type=str,       	help='Model Selection')
+    parser.add_argument('--model',      	dest="model",          	default='comdense',     	type=str,       	help='Model Selection')
 
     # Logging parameters
     parser.add_argument('--logdir',    	dest="log_dir",       	default='./log/',               		help='Log directory')

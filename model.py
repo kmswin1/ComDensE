@@ -2,9 +2,9 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-class CombinE(nn.Module):
+class ComDensE(nn.Module):
     def __init__(self, args):
-        super(CombinE, self).__init__()
+        super(ComDensE, self).__init__()
         self.args = args
         self.ent_emb = nn.Parameter(torch.randn(self.args.num_ent, self.args.embed_dim))
         self.rel_emb = nn.Parameter(torch.randn(2 * self.args.num_rel, self.args.embed_dim))
