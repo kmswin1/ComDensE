@@ -27,6 +27,10 @@
  python main.py --model shared --width 100 --data WN18RR --name SharedDensE_100_WN18RR
  python main.py --model multilayer --depth 4 --data FB15k-237 --name MultiLayer_4_FB15k-237
 ```
+
+## Citation
+If you use any part of this code and pretrained weights for your own purpose, please cite our [paper]().
+```
 @InProceedings{,
   title = 	 ComDensE : Combined Dense Embedding of Relation-aware and Common Features for Knowledge Graph Completion},
   author =       {Minsang Kim, Seungjun Baek},
