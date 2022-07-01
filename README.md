@@ -29,7 +29,7 @@
 ```
 
 ## Citation
-If you use any part of this code and pretrained weights for your own purpose, please cite our [paper]().
+If you use any part of this code and pretrained weights for your own purpose, please cite our [paper](https://arxiv.org/pdf/2206.14925.pdf).
 ```
 @InProceedings{,
   title = 	 ComDensE : Combined Dense Embedding of Relation-aware and Common Features for Knowledge Graph Completion},
