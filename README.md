@@ -13,7 +13,7 @@
  python main.py --model "model" --data "dataset_name" --name "name"
 ```
 
-### download trained models : [Downloads](https://drive.google.com/drive/folders/1GeGdZgnanNYbEwc_rqMQM71Lv16M5F0P?usp=sharing)
+### download trained models : [Downloads](https://drive.google.com/drive/folders/108b1NDU9EiQct74FgC7y0PAUTrTgI33e?usp=sharing)
 
 ### evaluation) : download pretrained models from google drive and save to directory ./torch_saved
 ```bash 
