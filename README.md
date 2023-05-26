@@ -13,20 +13,20 @@
  python main.py --model "model" --data "dataset_name" --name "name"
 ```
 
-### download trained models : [Downloads](https://drive.google.com/drive/folders/108b1NDU9EiQct74FgC7y0PAUTrTgI33e?usp=sharing)
-
-### evaluation) : download pretrained models from google drive and save to directory ./torch_saved
-```bash 
- python main.py --model comdense --width 2 --restore --epoch 0 --name ComDensE_FB15k-237 --data FB15k-237
- python main.py --model comdense --width 100 --restore --epoch 0 --name ComDensE_WN18RR --data WN18RR
- ```
-
 ### train example)
 ```bash
  python main.py --model comdense --width 2 --data FB15k-237 --name ComDensE_FB15k-237
  python main.py --model shared --width 100 --data WN18RR --name SharedDensE_100_WN18RR
  python main.py --model multilayer --depth 4 --data FB15k-237 --name MultiLayer_4_FB15k-237
 ```
+
+After training,
+
+### evaluation) : save to directory ./torch_saved
+```bash 
+ python main.py --model comdense --width 2 --restore --epoch 0 --name ComDensE_FB15k-237 --data FB15k-237
+ python main.py --model comdense --width 100 --restore --epoch 0 --name ComDensE_WN18RR --data WN18RR
+ ```
 
 ### Citation
 If you use any part of this code and pretrained weights for your own purpose, please cite our [paper](https://arxiv.org/pdf/2206.14925.pdf).
